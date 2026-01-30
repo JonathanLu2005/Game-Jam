@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     public float speed = 5f;
+    public float jumpForce = 5f;
 
     private void Awake()
     {
@@ -18,5 +19,9 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame) {
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+        }
     }
 }
