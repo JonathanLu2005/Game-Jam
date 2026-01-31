@@ -6,6 +6,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D body;
     public float speed = 5f;
     public float jumpForce = 5f;
+    public int startingHealth = 100;
+    public int health = 100;
+    public int lives = 3;
 
     private void Awake()
     {
@@ -22,6 +25,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+        }
+    }
+
+    public void Damage(int damage) {
+        health -= damage;
+
+        if (health <= 0) {
+            lives--;
+            health = startingHealth;
+            transform.position = new Vector2(0,0);
         }
     }
 }
