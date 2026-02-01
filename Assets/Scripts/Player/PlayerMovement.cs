@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public int startingHealth = 100;
     public int health = 100;
     public int lives = 3;
+    private bool jumping = false;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -29,17 +30,38 @@ public class PlayerMovement : MonoBehaviour
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            // Set animation trigger for jump
+            animator.SetTrigger("Jump");
         }
 
         // Animate the player's movement
         AnimateMovement();
     }
 
+    public void Jump()
+    {
+        if (!jumping)
+        {
+            jumping = true;
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            Debug.Log("Jump");
+        }
+    }
+
+    public void Grounded()
+    {
+        jumping = false;
+        Debug.Log("Grounded");
+    }
+
+
     public void AnimateMovement()
     {
         // Set animation parameter float
         animator.SetFloat("Speed", Mathf.Abs(body.linearVelocityX));
+
+        // Set animation parameter for ySpeed
+        animator.SetFloat("ySpeed", body.linearVelocityY);
 
         if (body.linearVelocityX < 0)
         {
