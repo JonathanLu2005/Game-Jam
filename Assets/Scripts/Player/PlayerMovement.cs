@@ -5,14 +5,18 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
+    public float startingSpeed = 5f;
     public float speed = 5f;
     public float jumpForce = 5f;
+    private Coroutine speedRoutine;
+    private float speedRoutineTimeLeft;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
+        speed = startingSpeed;
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -47,5 +51,26 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public void SpeedOverTimeRoutine(int value, int duration) {
+        speedRoutineTimeLeft = duration;
+
+        if (speedRoutine == null) {
+            speedRoutine = StartCoroutine(SpeedOverTime(value));
+        }
+    }
+
+    IEnumerator SpeedOverTime(int value) {
+        while (speedRoutineTimeLeft > 0) {
+            Debug.Log("Speed: " + speed);
+            Debug.Log("Time: " + speedRoutineTimeLeft);
+            speed = value;
+            speedRoutineTimeLeft -= 1f;
+            yield return new WaitForSeconds(1f);
+        }
+
+        speed = startingSpeed;
+        speedRoutine = null;
     }
 }

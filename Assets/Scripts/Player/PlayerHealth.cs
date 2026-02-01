@@ -42,6 +42,8 @@ public class PlayerHealth : MonoBehaviour
             healRoutineTimeLeft -= 1f;
             yield return new WaitForSeconds(1f);
         }
+
+        healRoutine = null;
     }
 
     public void DamageOverTimeRoutine(int value, int duration) {
@@ -65,5 +67,7 @@ public class PlayerHealth : MonoBehaviour
             damageRoutineTimeLeft -= 1f;
             yield return new WaitForSeconds(1f);
         }
+
+        damageRoutine = null;
     }
 }

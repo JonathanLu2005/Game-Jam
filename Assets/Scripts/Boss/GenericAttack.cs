@@ -3,7 +3,7 @@ using UnityEngine;
 public class GenericAttack : MonoBehaviour 
 {
     // positive to heal, negative to take health
-    public int value = -50;
+    public int value = 1;
     public int duration = 5;
 
     void Start() {
@@ -29,11 +29,18 @@ public class GenericAttack : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    */
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
             collision.GetComponent<PlayerHealth>().DamageOverTimeRoutine(value, duration);
+            Destroy(gameObject);
+        }
+    }
+    */
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            collision.GetComponent<PlayerMovement>().SpeedOverTimeRoutine(value, duration);
             Destroy(gameObject);
         }
     }
