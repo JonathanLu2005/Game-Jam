@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     public float speed = 5f;
     public float jumpForce = 5f;
-    public int startingHealth = 100;
-    public int health = 100;
-    public int lives = 3;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -48,18 +46,6 @@ public class PlayerMovement : MonoBehaviour
         if (body.linearVelocityX > 0)
         {
             spriteRenderer.flipX = false;
-        }
-    }
-
-    public void ModifyHealth(int damage) {
-        health += damage;
-
-        if (health <= 0) {
-            lives--;
-            health = startingHealth;
-            transform.position = new Vector2(0,0);
-        } else if (health >= startingHealth) {
-            health = startingHealth;
         }
     }
 }
