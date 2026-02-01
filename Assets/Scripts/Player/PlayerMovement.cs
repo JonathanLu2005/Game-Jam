@@ -1,9 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
+    private Coroutine healRoutine;
+    private float healRoutineTimeLeft;
+    private Coroutine damageRoutine;
+    private float damageRoutineTimeLeft;
     public float speed = 5f;
     public float jumpForce = 5f;
     public int startingHealth = 100;
@@ -51,8 +56,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void ModifyHealth(int damage) {
-        health += damage;
+    public void ModifyHealth(int value) {
+        health += value;
 
         if (health <= 0) {
             lives--;
@@ -60,6 +65,50 @@ public class PlayerMovement : MonoBehaviour
             transform.position = new Vector2(0,0);
         } else if (health >= startingHealth) {
             health = startingHealth;
+        }
+    }
+
+    public void HealOverTimeRoutine(int value, int duration) {
+        healRoutineTimeLeft = duration;
+
+        if (healRoutine == null) {
+            healRoutine = StartCoroutine(HealOverTime(value));
+        }
+    }
+
+    IEnumerator HealOverTime(int value) {
+        while (healRoutineTimeLeft > 0) {
+            Debug.Log("Health: " + health);
+            Debug.Log("Time: " + healRoutineTimeLeft);
+            ModifyHealth(value);
+            if (health >= startingHealth) {
+                health = startingHealth;
+            } 
+            healRoutineTimeLeft -= 1f;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    public void DamageOverTimeRoutine(int value, int duration) {
+        damageRoutineTimeLeft = duration;
+
+        if (damageRoutine == null) {
+            damageRoutine = StartCoroutine(DamageOverTime(value));
+        }
+    }
+
+    IEnumerator DamageOverTime(int value) {
+        while (damageRoutineTimeLeft > 0) {
+            Debug.Log("Health: " + health);
+            Debug.Log("Time: " + damageRoutineTimeLeft);
+            ModifyHealth(value);
+            if (health <= 0) {
+                transform.position = new Vector2(0,0);
+                damageRoutine = null;
+                yield break;
+            }
+            damageRoutineTimeLeft -= 1f;
+            yield return new WaitForSeconds(1f);
         }
     }
 }
