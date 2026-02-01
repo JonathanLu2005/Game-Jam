@@ -51,9 +51,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-    public void Damage(int damage) {
-        health -= damage;
     public void ModifyHealth(int damage) {
         health += damage;
 
