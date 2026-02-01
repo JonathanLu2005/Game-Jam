@@ -10,9 +10,14 @@ public class PlayerMovement : MonoBehaviour
     public int health = 100;
     public int lives = 3;
 
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -26,7 +31,26 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
         }
+
+        // Animate the player's movement
+        AnimateMovement();
     }
+
+    public void AnimateMovement()
+    {
+        // Set animation parameter float
+        animator.SetFloat("Speed", Mathf.Abs(body.linearVelocityX));
+
+        if (body.linearVelocityX < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (body.linearVelocityX > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
 
     public void Damage(int damage) {
         health -= damage;
