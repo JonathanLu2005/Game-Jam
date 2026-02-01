@@ -54,11 +54,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void Damage(int damage) {
         health -= damage;
+    public void ModifyHealth(int damage) {
+        health += damage;
 
         if (health <= 0) {
             lives--;
             health = startingHealth;
             transform.position = new Vector2(0,0);
+        } else if (health >= startingHealth) {
+            health = startingHealth;
         }
     }
 }
