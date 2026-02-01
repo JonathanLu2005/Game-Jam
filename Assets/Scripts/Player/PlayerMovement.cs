@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public int startingHealth = 100;
     public int health = 100;
     public int lives = 3;
+
     private bool jumping = false;
 
     private Animator animator;
@@ -24,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         float move = 0f;
+
 
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
@@ -55,6 +58,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            jumping = false;
+            Debug.Log("On da ground");
+        }
+    }
     public void AnimateMovement()
     {
         // Set animation parameter float
