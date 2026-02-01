@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -10,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     private Coroutine speedRoutine;
     private float speedRoutineTimeLeft;
+
+    private bool jumping = false;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -26,22 +29,52 @@ public class PlayerMovement : MonoBehaviour
     {
         float move = 0f;
 
+
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            // Set animation trigger for jump
+            animator.SetTrigger("Jump");
         }
 
         // Animate the player's movement
         AnimateMovement();
     }
 
+    public void Jump()
+    {
+        if (!jumping)
+        {
+            jumping = true;
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            Debug.Log("Jump");
+        }
+    }
+
+    public void Grounded()
+    {
+        jumping = false;
+        Debug.Log("Grounded");
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            jumping = false;
+            Debug.Log("On da ground");
+        }
+    }
     public void AnimateMovement()
     {
         // Set animation parameter float
         animator.SetFloat("Speed", Mathf.Abs(body.linearVelocityX));
+
+        // Set animation parameter for ySpeed
+        animator.SetFloat("ySpeed", body.linearVelocityY);
 
         if (body.linearVelocityX < 0)
         {
