@@ -18,12 +18,12 @@ public class BattleBoxGeometry : MonoBehaviour
     public BoxCollider2D topCol;
     public BoxCollider2D bottomCol;
 
-    float wallThickness;
     Vector2 fullScreenDims;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        wallThickness = leftCol.size.x;
+        //wallThickness = leftCol.size.x;
+        //wallThickness = 1;
         fullScreenDims = new Vector2(18, 10);
     }
 
@@ -35,6 +35,7 @@ public class BattleBoxGeometry : MonoBehaviour
 
     public void SetSize(Vector2 size)
     {
+
         float halfW = size.x * 0.5f;
         float halfH = size.y * 0.5f;
 
@@ -47,15 +48,15 @@ public class BattleBoxGeometry : MonoBehaviour
         // Shorten/lengthen walls
         leftWall.localScale = new Vector3(1, size.y);
         rightWall.localScale = new Vector3(1, size.y);
-        topWall.localScale = new Vector3(size.x + wallThickness, 1);
-        bottomWall.localScale = new Vector3(size.x + wallThickness, 1);
+        topWall.localScale = new Vector3(size.x+1, 1);
+        bottomWall.localScale = new Vector3(size.x+1, 1);
 
         // Adjust collider
-        SetCollider(topCol, size.x, wallThickness);
-        SetCollider(bottomCol, size.x, wallThickness);
+        //SetCollider(topCol, size.x, wallThickness);
+        //SetCollider(bottomCol, size.x, wallThickness);
 
-        SetCollider(leftCol, wallThickness, size.y);
-        SetCollider(rightCol, wallThickness, size.y);
+        //SetCollider(leftCol, wallThickness, size.y);
+        //SetCollider(rightCol, wallThickness, size.y);
     }
 
     void SetCollider(BoxCollider2D col, float x, float y)
