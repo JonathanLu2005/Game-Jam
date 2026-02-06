@@ -49,14 +49,12 @@ public class PlayerMovement : MonoBehaviour
         {
             jumping = true;
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
-            Debug.Log("Jump");
         }
     }
 
     public void Grounded()
     {
         jumping = false;
-        Debug.Log("Grounded");
     }
 
 
@@ -65,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             jumping = false;
-            Debug.Log("On da ground");
         }
     }
     public void AnimateMovement()
@@ -96,8 +93,6 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator SpeedOverTime(int value) {
         while (speedRoutineTimeLeft > 0) {
-            Debug.Log("Speed: " + speed);
-            Debug.Log("Time: " + speedRoutineTimeLeft);
             speed = value;
             speedRoutineTimeLeft -= 1f;
             yield return new WaitForSeconds(1f);
