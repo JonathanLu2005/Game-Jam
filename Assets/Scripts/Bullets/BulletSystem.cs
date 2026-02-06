@@ -9,7 +9,6 @@ public class BulletSystem : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Spawn(new Vector2(0, 0), new Vector2(1, 1));
     }
 
     public Bullet Spawn(Vector2 pos, Vector2 velocity)
