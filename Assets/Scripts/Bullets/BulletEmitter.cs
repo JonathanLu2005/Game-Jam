@@ -24,7 +24,7 @@ public class BulletEmitter : MonoBehaviour
         while (emitInterval > 0)
         {
             yield return StartCoroutine(pattern.Execute(this));
-            yield return new WaitForSeconds(1f / fireRatePerSecond);
+            yield return new WaitForSeconds(emitInterval);
         }
     }
 }
