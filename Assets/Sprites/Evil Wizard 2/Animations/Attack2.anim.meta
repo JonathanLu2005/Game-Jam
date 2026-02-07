@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c551b7b769746cd4ea3cf98d3e580903
+guid: 496a566fbe669494e9fdf8c522c1b818
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 284501
   packageName: Evil Wizard 2
   packageVersion: 1.0
-  assetPath: Assets/Evil Wizard 2/Animations/Attack2.anim
+  assetPath: Assets/Evil Wizard 2/Animations/Idle.anim
   uploadId: 662692
