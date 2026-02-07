@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private float speedRoutineTimeLeft;
 
     private bool jumping = false;
+    private bool isFlipped = false;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float move = 0f;
 
-
+        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.    Max(PlayerData.iframesTime-Time.deltaTime,0f);
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
@@ -81,13 +82,15 @@ public class PlayerMovement : MonoBehaviour
         // Set animation parameter for ySpeed
         animator.SetFloat("ySpeed", body.linearVelocityY);
 
-        if (body.linearVelocityX < 0)
+        if (body.linearVelocityX < 0 && !isFlipped)
         {
-            spriteRenderer.flipX = true;
+            GameObject.FindGameObjectWithTag("Player").transform.Rotate(0f, 180f, 0f);
+            isFlipped = true;
         }
-        if (body.linearVelocityX > 0)
+        if (body.linearVelocityX > 0 && isFlipped)
         {
-            spriteRenderer.flipX = false;
+            GameObject.FindGameObjectWithTag("Player").transform.Rotate(0f, 180f, 0f);
+            isFlipped = false;
         }
     }
 

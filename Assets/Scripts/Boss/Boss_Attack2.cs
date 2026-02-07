@@ -3,7 +3,7 @@ using UnityEngine;
 public class Boss_Attack2 : StateMachineBehaviour
 {
 
-    float attackRange = 7f;
+    float attackRange = Boss_Data.attackRange;
     Transform player;
     Rigidbody2D rb;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

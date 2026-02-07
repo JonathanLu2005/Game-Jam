@@ -17,11 +17,12 @@ public class Weapon_Collide : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Parry Box"))
+        if (collision.CompareTag("Parry Box") && PlayerData.iframesTime <= 0)
         {
             Debug.Log("Parried");
+            PlayerData.iframesTime = PlayerData.maxIframesTime;
         }
-        else if (collision.CompareTag("Player"))
+        else if (collision.CompareTag("Player") && PlayerData.iframesTime <= 0)
         {
             collision.GetComponent<PlayerHealth>().ModifyHealth(value);
         }
