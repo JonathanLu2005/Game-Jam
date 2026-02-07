@@ -1195,6 +1195,7 @@ GameObject:
   - component: {fileID: 967582483}
   - component: {fileID: 967582485}
   - component: {fileID: 967582486}
+  - component: {fileID: 967582487}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -1385,6 +1386,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &967582487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967582478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4e7de76be04cf4ab1b9e7eba759b4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Boss_Main
 --- !u!1 &1323513613
 GameObject:
   m_ObjectHideFlags: 0
