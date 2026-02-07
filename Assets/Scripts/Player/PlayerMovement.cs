@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
     public void Grounded()
     {
         jumping = false;
-        //Debug.Log("Grounded");
     }
 
 
@@ -64,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             jumping = false;
-            //Debug.Log("On da ground");
         }
     }
     public void AnimateMovement()
