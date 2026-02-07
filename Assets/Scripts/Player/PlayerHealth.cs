@@ -1,4 +1,6 @@
-using UnityEngine;
+using UnityEngine; 
+using UnityEngine.UI; 
+using TMPro; 
 using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
@@ -10,6 +12,19 @@ public class PlayerHealth : MonoBehaviour
     public int startingHealth = 100;
     public int health = 100;
     public int lives = 3;
+    public Slider healthSlider; 
+    public TMP_Text healthText;
+
+    void Start() { 
+        health = startingHealth; 
+        healthSlider.maxValue = startingHealth; 
+        UpdateUI(); 
+    }
+
+    void UpdateUI() { 
+        healthSlider.value = health; 
+        healthText.text = health + " / " + startingHealth; 
+    }
 
     public void ModifyHealth(int value) {
         health += value;
@@ -21,7 +36,8 @@ public class PlayerHealth : MonoBehaviour
         } else if (health >= startingHealth) {
             health = startingHealth;
         }
-        Debug.Log("Damaged");
+        Debug.Log("Health: " + health + " Lives: " + lives);
+        UpdateUI();
     }
 
     public void HealOverTimeRoutine(int value, int duration) {
