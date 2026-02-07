@@ -39,6 +39,12 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Jump");
         }
 
+        if (Keyboard.current.shiftKey.wasPressedThisFrame)
+        {
+            // Set animation trigger for jump
+            animator.SetTrigger("Parry");
+        }
+
         // Animate the player's movement
         AnimateMovement();
     }
