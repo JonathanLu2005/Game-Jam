@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
         } else if (health >= startingHealth) {
             health = startingHealth;
         }
+        Debug.Log("Health: " + health);
     }
 
     public void HealOverTimeRoutine(int value, int duration) {
