@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
         {
             jumping = true;
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
-            Debug.Log("Jump");
         }
     }
 
@@ -96,8 +95,6 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator SpeedOverTime(int value) {
         while (speedRoutineTimeLeft > 0) {
-            Debug.Log("Speed: " + speed);
-            Debug.Log("Time: " + speedRoutineTimeLeft);
             speed = value;
             speedRoutineTimeLeft -= 1f;
             yield return new WaitForSeconds(1f);

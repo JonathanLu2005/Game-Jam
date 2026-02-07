@@ -33,8 +33,6 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator HealOverTime(int value) {
         while (healRoutineTimeLeft > 0) {
-            Debug.Log("Health: " + health);
-            Debug.Log("Time: " + healRoutineTimeLeft);
             ModifyHealth(value);
             if (health >= startingHealth) {
                 health = startingHealth;
@@ -56,8 +54,6 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator DamageOverTime(int value) {
         while (damageRoutineTimeLeft > 0) {
-            Debug.Log("Health: " + health);
-            Debug.Log("Time: " + damageRoutineTimeLeft);
             ModifyHealth(value);
             if (health <= 0) {
                 transform.position = new Vector2(0,0);
