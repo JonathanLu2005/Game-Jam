@@ -42,5 +42,10 @@ public class BattleBoxCore : MonoBehaviour
         
     }
 
-    
+    public void SetShape(BoxShape newShape) {
+        Debug.Log(newShape);
+        currentShape = newShape;
+        geometry = GetComponent<BattleBoxGeometry>();
+        geometry.SetSize(ResolveShape(newShape));
+    }
 }
