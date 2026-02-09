@@ -13,8 +13,8 @@ public class Bullet : MonoBehaviour
         
         Velocity = velocity;
         timer = 0f;
-        Debug.Log("Inside Initialise Function");
-        Debug.Log(Velocity);
+        //Debug.Log("Inside Initialise Function");
+        //Debug.Log(Velocity);
     }
 
     private void Start()
