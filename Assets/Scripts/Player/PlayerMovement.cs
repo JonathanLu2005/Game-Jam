@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
             // Set animation trigger for jump
             animator.SetTrigger("Jump");
+            Jump();
         }
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
