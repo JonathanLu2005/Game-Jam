@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
         } else if (health >= startingHealth) {
             health = startingHealth;
         }
-        Debug.Log("Health: " + health + " Lives: " + lives);
+        //Debug.Log("Health: " + health + " Lives: " + lives);
         UpdateUI();
     }
 
