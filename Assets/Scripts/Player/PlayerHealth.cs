@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void ModifyHealth(int value) {
         health += value;
-
+        PlayerData.iframesTime = PlayerData.maxIframesTime;
         if (health <= 0) {
             lives--;
             health = startingHealth;
@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
         } else if (health >= startingHealth) {
             health = startingHealth;
         }
-        Debug.Log("Health: " + health + " Lives: " + lives);
+        //Debug.Log("Health: " + health + " Lives: " + lives);
         UpdateUI();
     }
 
@@ -63,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void DamageOverTimeRoutine(int value, int duration) {
         damageRoutineTimeLeft = duration;
+        PlayerData.iframesTime = PlayerData.maxIframesTime;
 
         if (damageRoutine == null) {
             damageRoutine = StartCoroutine(DamageOverTime(value));

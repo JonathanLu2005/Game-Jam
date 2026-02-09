@@ -7,15 +7,17 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     public float startingSpeed = 5f;
-    public float speed = 5f;
-    public float jumpForce = 5f;
+    public float speed = 10f;
+    public float jumpForce = 10f;
     private Coroutine speedRoutine;
     private float speedRoutineTimeLeft;
 
     private bool jumping = false;
+    private bool isFlipped = false;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Collider2D playerCollider;
 
     private void Awake()
     {
@@ -23,13 +25,14 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
     {
         float move = 0f;
 
-
+        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.    Max(PlayerData.iframesTime-Time.deltaTime,0f);
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
@@ -37,6 +40,17 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
             // Set animation trigger for jump
             animator.SetTrigger("Jump");
+        }
+
+        if (Keyboard.current.shiftKey.wasPressedThisFrame)
+        {
+            // Set animation trigger for parry
+            animator.SetTrigger("Parry");
+        }
+
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            StartCoroutine(DropThroughPlatform());
         }
 
         // Animate the player's movement
@@ -75,13 +89,15 @@ public class PlayerMovement : MonoBehaviour
         // Set animation parameter for ySpeed
         animator.SetFloat("ySpeed", body.linearVelocityY);
 
-        if (body.linearVelocityX < 0)
+        if (body.linearVelocityX < 0 && !isFlipped)
         {
-            spriteRenderer.flipX = true;
+            GameObject.FindGameObjectWithTag("Player").transform.Rotate(0f, 180f, 0f);
+            isFlipped = true;
         }
-        if (body.linearVelocityX > 0)
+        if (body.linearVelocityX > 0 && isFlipped)
         {
-            spriteRenderer.flipX = false;
+            GameObject.FindGameObjectWithTag("Player").transform.Rotate(0f, 180f, 0f);
+            isFlipped = false;
         }
     }
 
@@ -103,4 +119,20 @@ public class PlayerMovement : MonoBehaviour
         speed = startingSpeed;
         speedRoutine = null;
     }
+
+    private IEnumerator DropThroughPlatform()
+    {
+        LayerMask platformMask = LayerMask.GetMask("Platforms");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2f, platformMask);
+        Debug.Log(hit.collider.GetComponent<PlatformEffector2D>() != null);
+        if (hit.collider != null && hit.collider.GetComponent<PlatformEffector2D>() != null)
+        {
+            Debug.Log("Collide with platform");
+            Collider2D platformCollider = hit.collider;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+            yield return new WaitForSeconds(0.75f);
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        }
+    }
+
 }

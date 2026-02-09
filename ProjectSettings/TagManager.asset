@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 3
   tags:
   - Boss
+  - Parry Box
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
-  - 
+  - Platforms
   - 
   - 
   - 
@@ -39,6 +40,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3265887153
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

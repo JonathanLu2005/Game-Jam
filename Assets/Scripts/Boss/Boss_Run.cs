@@ -5,7 +5,7 @@ public class Boss_Run : StateMachineBehaviour
     Transform player;
     Rigidbody2D rb;
     float speed = 3f;
-    float attackRange = 5f;
+    float attackRange = Boss_Data.attackRange;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,8 +22,10 @@ public class Boss_Run : StateMachineBehaviour
         Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
         rb.MovePosition(newPos);
 
-        if (Vector2.Distance(player.position, rb.position) <= attackRange)
+        if (Vector2.Distance(player.position, rb.position) <= attackRange && Boss_Data.timeToAttack <=  Boss_Data.timeSinceAttack)
         {
+            Boss_Data.timeSinceAttack = 2f; // Need to reset this cos parry
+            Boss_Data.timeSinceAttack = 0f;
             animator.SetTrigger("Attack 2");
         }
     }
