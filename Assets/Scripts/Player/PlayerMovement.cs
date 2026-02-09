@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D body;
     public float startingSpeed = 5f;
     public float speed = 10f;
-    public float jumpForce = 10f;
+    private float jumpForce = 7f;
     private Coroutine speedRoutine;
     private float speedRoutineTimeLeft;
 
