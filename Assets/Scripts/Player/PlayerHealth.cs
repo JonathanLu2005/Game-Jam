@@ -27,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     public void ModifyHealth(int value) {
+        if (PlayerData.iframesTime > 0) return; // If player is currently invulnerable, do not modify health
         health += value;
         PlayerData.iframesTime = PlayerData.maxIframesTime;
         if (health <= 0) {

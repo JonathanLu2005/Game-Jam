@@ -124,15 +124,12 @@ public class PlayerMovement : MonoBehaviour
     {
         LayerMask platformMask = LayerMask.GetMask("Platforms");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2f, platformMask);
-        Debug.Log(hit.collider.GetComponent<PlatformEffector2D>() != null);
         if (hit.collider != null && hit.collider.GetComponent<PlatformEffector2D>() != null)
         {
-            Debug.Log("Collide with platform");
             Collider2D platformCollider = hit.collider;
             Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
             yield return new WaitForSeconds(0.75f);
             Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
         }
     }
-
 }
