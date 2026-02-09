@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Collider2D playerCollider;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -42,8 +44,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
         {
-            // Set animation trigger for jump
+            // Set animation trigger for parry
             animator.SetTrigger("Parry");
+        }
+
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            StartCoroutine(DropThroughPlatform());
         }
 
         // Animate the player's movement
@@ -112,4 +119,20 @@ public class PlayerMovement : MonoBehaviour
         speed = startingSpeed;
         speedRoutine = null;
     }
+
+    private IEnumerator DropThroughPlatform()
+    {
+        LayerMask platformMask = LayerMask.GetMask("Platforms");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2f, platformMask);
+        Debug.Log(hit.collider.GetComponent<PlatformEffector2D>() != null);
+        if (hit.collider != null && hit.collider.GetComponent<PlatformEffector2D>() != null)
+        {
+            Debug.Log("Collide with platform");
+            Collider2D platformCollider = hit.collider;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+            yield return new WaitForSeconds(0.75f);
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        }
+    }
+
 }
