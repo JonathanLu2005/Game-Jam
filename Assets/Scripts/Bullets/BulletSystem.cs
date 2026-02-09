@@ -17,7 +17,7 @@ public class BulletSystem : MonoBehaviour
         var b = GameObject.Instantiate(bulletPrefab);
         b.transform.position = pos;
         b.Initialize(velocity);
-        Debug.Log("Called initialize");
+        //Debug.Log("Called initialize");
         return b;
     }
 
