@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Boss_Jump_Move : StateMachineBehaviour
+public class Boss_Jump_Down : StateMachineBehaviour
 {
     Transform player;
     Rigidbody2D rb;
@@ -17,7 +17,7 @@ public class Boss_Jump_Move : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.GetComponent<Boss_Look_Player>().LookAt(player);
-        Vector2 target = new Vector2(player.position.x + Boss_Data.attackRange, player.position.y);
+        Vector2 target = new Vector2(player.position.x, player.position.y);
         Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
         rb.MovePosition(newPos);
     }

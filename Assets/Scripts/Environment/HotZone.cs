@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class HotZone : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private float timer = 0;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        
+        if (collision.CompareTag("Player"))
+        {
+            timer += 1;
+            if (timer % 50 == 0)
+            {
+                Boss_Data.health--;
+                Debug.Log("Player is in hot zone, health: " + Boss_Data.health);
+            }
+        }
     }
 }
