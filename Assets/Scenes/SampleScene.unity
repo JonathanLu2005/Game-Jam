@@ -3231,7 +3231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   startingSpeed: 5
   speed: 5
-  jumpForce: 20
+  jumpForce: 10
 --- !u!212 &1814561561
 SpriteRenderer:
   serializedVersion: 2
