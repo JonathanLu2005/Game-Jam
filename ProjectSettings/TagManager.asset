@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Boss
   - Parry Box
+  - Origin
   layers:
   - Default
   - TransparentFX

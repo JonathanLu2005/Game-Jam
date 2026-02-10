@@ -10,7 +10,12 @@ using UnityEngine;
 public class BulletEmitter : MonoBehaviour
 {
     public BulletPattern pattern;
-    public float fireRatePerSecond = 1;
+    private float fireRatePerSecond = 1f;
+
+    public void setFireRatePerSecond(float f)
+    {
+        fireRatePerSecond = f;
+    }
 
     void Start()
     {

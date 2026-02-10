@@ -17,7 +17,7 @@ public class BulletCollide : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("[BULLET COLLIDE]");
+        //Debug.Log("[BULLET COLLIDE]");
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerHealth>().ModifyHealth(value);
