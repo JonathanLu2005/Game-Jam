@@ -1,4 +1,5 @@
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; 
 using TMPro; 
 using System.Collections;
@@ -32,6 +33,9 @@ public class PlayerHealth : MonoBehaviour
         PlayerData.iframesTime = PlayerData.maxIframesTime;
         if (health <= 0) {
             lives--;
+            if (lives <= 0) {
+                SceneManager.LoadScene("MainMenu");
+            }
             health = startingHealth;
             transform.position = new Vector2(0,0);
         } else if (health >= startingHealth) {

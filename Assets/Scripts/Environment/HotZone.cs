@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HotZone : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class HotZone : MonoBehaviour
             if (timer % 50 == 0)
             {
                 Boss_Data.health--;
-                Debug.Log("Player is in hot zone, health: " + Boss_Data.health);
+                if (Boss_Data.health <= 0)
+                {
+                    SceneManager.LoadScene("Win");
+                }
             }
         }
     }
