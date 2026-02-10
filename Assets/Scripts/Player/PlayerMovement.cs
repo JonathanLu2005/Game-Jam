@@ -8,7 +8,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D body;
     public float startingSpeed = 5f;
     public float speed = 10f;
-    private float jumpForce = 10f;
+    private float jumpForce = 0f;
+    private float jumpHoldForce = 7f;
+    private float maxJumpTime = 0.25f;
+
+    private float jumpTimeCounter;
+    private bool isJumpingHeld;
+
     private Coroutine speedRoutine;
     private float speedRoutineTimeLeft;
 
@@ -32,15 +38,45 @@ public class PlayerMovement : MonoBehaviour
     {
         float move = 0f;
 
-        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.    Max(PlayerData.iframesTime-Time.deltaTime,0f);
+        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.Max(PlayerData.iframesTime-Time.deltaTime,0f);
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-            // Set animation trigger for jump
+        // Start jump
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && !jumping)
+        {
+            jumping = true;
+            isJumpingHeld = true;
+            jumpTimeCounter = maxJumpTime;
+
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
             animator.SetTrigger("Jump");
         }
+
+        // Continue jump while held
+        if (Keyboard.current.spaceKey.isPressed && isJumpingHeld)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                body.linearVelocity = new Vector2(body.linearVelocity.x, jumpHoldForce);
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                isJumpingHeld = false;
+            }
+        }
+
+        // Stop jump early when released
+        if (Keyboard.current.spaceKey.wasReleasedThisFrame)
+        {
+            isJumpingHeld = false;
+
+            if (body.linearVelocity.y > 0)
+                body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y * 0.5f);
+        }
+
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
         {
@@ -55,15 +91,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Animate the player's movement
         AnimateMovement();
-    }
-
-    public void Jump()
-    {
-        if (!jumping)
-        {
-            jumping = true;
-            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
-        }
     }
 
     public void Grounded()
