@@ -1,43 +1,32 @@
 using UnityEngine;
 
-public class Boss_Attack2 : StateMachineBehaviour
+public class Boss_Jump_Down : StateMachineBehaviour
 {
-
-    float attackRange = Boss_Data.attackRange;
     Transform player;
     Rigidbody2D rb;
+    float speed = 3f;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        rb = animator.GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = animator.GetComponent<Rigidbody2D>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.GetComponent<Boss_Look_Player>().LookAt(player);
-        if (Vector2.Distance(player.position, rb.position) <= attackRange && Boss_Data.timeToAttack <=  Boss_Data.timeSinceAttack)
-        {
-            Boss_Data.timeSinceAttack = Random.Range(1.5F, 2.5F); ; // Need to reset this cos parry
-            Boss_Data.timeSinceAttack = 0f;
-            if (rb.position.y+1 < player.position.y)
-            {
-                animator.SetTrigger("Attack 1");
-            }
-            else
-            {
-                animator.SetTrigger("Attack 2");
-            }
-        }
+        Vector2 target = new Vector2(player.position.x, player.position.y);
+        Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
+        rb.MovePosition(newPos);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        animator.ResetTrigger("Attack 2");
-        animator.ResetTrigger("Attack 1");
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
