@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PatternBurstFire
   count: 5
   speed: 5
-  bulletInterval: 0.1
+  bulletInterval: 0.3
