@@ -10,7 +10,7 @@ public class HotZone : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             timer += 1;
-            if (timer % 50 == 0)
+            if (timer % 25 == 0)
             {
                 Boss_Data.health--;
                 if (Boss_Data.health <= 0)
