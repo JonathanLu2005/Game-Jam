@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumping = false;
     private bool isFlipped = false;
     private bool isInvincible = false;
+    private bool canParry = true;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Collider2D playerCollider;
@@ -105,8 +106,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
         {
+            Debug.Log("Can Parry:" + canParry);
             // Set animation trigger for parry
-            animator.SetTrigger("Parry");
+            if (canParry) animator.SetTrigger("Parry");
+            StartCoroutine(TempDisableParry());
         }
 
         if (Keyboard.current.sKey.wasPressedThisFrame)
@@ -116,6 +119,17 @@ public class PlayerMovement : MonoBehaviour
 
         // Animate the player's movement
         AnimateMovement();
+    }
+
+    private IEnumerator TempDisableParry() {
+        if (!canParry)
+        {
+            yield return null;
+        }
+        canParry = false;
+        Debug.Log("Disabled Parry:"+canParry);
+        yield return new WaitForSeconds(2f);
+        canParry = true;
     }
 
     private void StartIFrames() {
