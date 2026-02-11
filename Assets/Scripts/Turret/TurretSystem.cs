@@ -41,12 +41,12 @@ public class TurretSystem : MonoBehaviour
     void Update()
     {
         // Demonstrate, spawn a turret when the t key is pressed
-        if (Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            Spawn(
-               new OrbitOptions(new Vector2(0, 0), 11f, 20f, 1)
-            );
-        }
+        //if (Keyboard.current.tKey.wasPressedThisFrame)
+        //{
+        //    Spawn(
+        //       new OrbitOptions(new Vector2(0, 0), 11f, 20f, 1)
+        //    );
+        //}
     }
 
     public TurretConfig Spawn(

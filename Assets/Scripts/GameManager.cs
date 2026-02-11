@@ -43,22 +43,27 @@ public class GameState : MonoBehaviour
             // Spawn a new orbiting turret
 
             
-            Debug.Log(numTurrets);
-            if (numTurrets< 5)
+            //Debug.Log(numTurrets);
+            if (numTurrets< 3)
             {
-                TurretConfig turret = TurretSystem.Spawn(new OrbitOptions(new Vector2(0, 10), 11f, 20f, 1));
+                TurretConfig turret = TurretSystem.Spawn(new OrbitOptions(
+                    new Vector2(10, 0), 
+                    orbitRadius: 11f, 
+                    orbitSpeed: 20f, 
+                    fireRatePerSecond:0.5f
+                ));
                 turrets.Enqueue(turret);
                 numTurrets++;
             }
 
-            else if (numTurrets == 5) { 
-                for(int i =0; i < 5; i++)
+            else if (numTurrets == 3) { 
+                for(int i =0; i < 3; i++)
                 {
                     TurretSystem.Release(turrets.Dequeue());
                     numTurrets--;
                 }
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
         }
 
     }

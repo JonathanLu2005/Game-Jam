@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,10 +21,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool jumping = false;
     private bool isFlipped = false;
-
+    private bool isInvincible = false;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Collider2D playerCollider;
+
+    Coroutine iFrameRoutine;
 
     private void Awake()
     {
@@ -37,8 +40,30 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         float move = 0f;
+        
+        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.Max(PlayerData.iframesTime - Time.deltaTime, 0f);
+        if (!isInvincible && PlayerData.iframesTime > 0f) {
+            Debug.Log(PlayerData.iframesTime);
+            isInvincible = true;
 
-        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.Max(PlayerData.iframesTime-Time.deltaTime,0f);
+            // Don't start IFrame animation if invincible from parrying
+            if (PlayerData.isParrying) {
+                PlayerData.isParrying = false;
+            }
+            else
+            {
+                StartIFrames();
+            }
+            
+        }
+        ;
+
+        if (isInvincible && PlayerData.iframesTime == 0f)
+        {
+            Debug.Log(PlayerData.iframesTime);
+            isInvincible = false;
+            StopIFrames();
+        }
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
@@ -91,6 +116,49 @@ public class PlayerMovement : MonoBehaviour
 
         // Animate the player's movement
         AnimateMovement();
+    }
+
+    private void StartIFrames() {
+
+        iFrameRoutine = StartCoroutine(IFrameVisual());
+    }
+
+    private void StopIFrames()
+    {
+        Color c = spriteRenderer.color;
+        c.a = 1f;
+        spriteRenderer.color = c;
+        StopCoroutine(iFrameRoutine);
+    }
+
+    IEnumerator IFrameVisual()
+    {
+        while (true)
+        {
+            var currentColor = spriteRenderer.color;
+            Debug.Log("Alpha Value:" + currentColor.a);
+            if(currentColor.a == 1f)
+            {
+                currentColor.a = 0.5f;
+                spriteRenderer.color = currentColor;
+            } else if(currentColor .a == 0.5f)
+            {
+                currentColor.a = 1f;
+                spriteRenderer.color = currentColor;
+            }
+
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void Jump()
+    {
+        if (!jumping)
+        {
+            jumping = true;
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+        }
     }
 
     public void Grounded()
