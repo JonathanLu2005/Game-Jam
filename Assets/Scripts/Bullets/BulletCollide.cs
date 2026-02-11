@@ -17,8 +17,13 @@ public class BulletCollide : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("[BULLET COLLIDE]");
-        if (collision.CompareTag("Player"))
+        //Debug.Log("[BULLET COLLIDE]");
+        if (collision.CompareTag("Parry Box") && PlayerData.iframesTime <= 0)
+        {
+            PlayerData.iframesTime = PlayerData.maxIframesTime;
+            PlayerData.isParrying = true;
+        }
+        else if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerHealth>().ModifyHealth(value);
         }

@@ -10,7 +10,12 @@ using UnityEngine;
 public class BulletEmitter : MonoBehaviour
 {
     public BulletPattern pattern;
-    public float fireRatePerSecond = 1;
+    private float fireRatePerSecond = 1f;
+
+    public void setFireRatePerSecond(float f)
+    {
+        fireRatePerSecond = f;
+    }
 
     void Start()
     {
@@ -19,10 +24,12 @@ public class BulletEmitter : MonoBehaviour
 
     IEnumerator FireLoop()
     {
+        
         // Don't fire if the fireRate is set to 0 or a negative
         float emitInterval = fireRatePerSecond > 0?  1f / fireRatePerSecond : 0;
         while (emitInterval > 0)
         {
+            yield return new WaitForSeconds(0.2f);
             yield return StartCoroutine(pattern.Execute(this));
             yield return new WaitForSeconds(emitInterval);
         }

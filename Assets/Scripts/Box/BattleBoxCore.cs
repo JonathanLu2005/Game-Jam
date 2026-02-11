@@ -36,6 +36,18 @@ public class BattleBoxCore : MonoBehaviour
         geometry.SetSize(ResolveShape(currentShape));
     }
 
+    public void AlternateShape()
+    {
+        if (currentShape ==BoxShape.FullScreenRectangle)
+        {
+            SetShape(BoxShape.MiniSquare);
+        }
+        else
+        {
+            SetShape(BoxShape.FullScreenRectangle);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

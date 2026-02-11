@@ -2,22 +2,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     public float startingSpeed = 5f;
     public float speed = 10f;
-    private float jumpForce = 10f;
+    private float jumpForce = 0f;
+    private float jumpHoldForce = 7f;
+    private float maxJumpTime = 0.25f;
+
+    private float jumpTimeCounter;
+    private bool isJumpingHeld;
+
     private Coroutine speedRoutine;
     private float speedRoutineTimeLeft;
 
     private bool jumping = false;
     private bool isFlipped = false;
-
+    private bool isInvincible = false;
+    private bool canParry = true;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Collider2D playerCollider;
+
+    Coroutine iFrameRoutine;
 
     private void Awake()
     {
@@ -31,22 +41,76 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         float move = 0f;
+        
+        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.Max(PlayerData.iframesTime - Time.deltaTime, 0f);
+        if (!isInvincible && PlayerData.iframesTime > 0f) {
+            Debug.Log(PlayerData.iframesTime);
+            isInvincible = true;
 
-        if (PlayerData.iframesTime > 0f) PlayerData.iframesTime = Mathf.    Max(PlayerData.iframesTime-Time.deltaTime,0f);
+            // Don't start IFrame animation if invincible from parrying
+            if (PlayerData.isParrying) {
+                PlayerData.isParrying = false;
+            }
+            else
+            {
+                StartIFrames();
+            }
+            
+        }
+        ;
+
+        if (isInvincible && PlayerData.iframesTime == 0f)
+        {
+            Debug.Log(PlayerData.iframesTime);
+            isInvincible = false;
+            StopIFrames();
+        }
         if (Keyboard.current.aKey.isPressed) move = -1f;
         if (Keyboard.current.dKey.isPressed) move = 1f;
         body.linearVelocity = new Vector2(move * speed, body.linearVelocity.y);
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-            // Set animation trigger for jump
+        // Start jump
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && !jumping)
+        {
+            jumping = true;
+            isJumpingHeld = true;
+            jumpTimeCounter = maxJumpTime;
+
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
             animator.SetTrigger("Jump");
             Jump();
         }
 
+        // Continue jump while held
+        if (Keyboard.current.spaceKey.isPressed && isJumpingHeld)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                body.linearVelocity = new Vector2(body.linearVelocity.x, jumpHoldForce);
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                isJumpingHeld = false;
+            }
+        }
+
+        // Stop jump early when released
+        if (Keyboard.current.spaceKey.wasReleasedThisFrame)
+        {
+            isJumpingHeld = false;
+
+            if (body.linearVelocity.y > 0)
+                body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y * 0.5f);
+        }
+
+
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
         {
+            Debug.Log("Can Parry:" + canParry);
             // Set animation trigger for parry
-            animator.SetTrigger("Parry");
+            if (canParry) animator.SetTrigger("Parry");
+            StartCoroutine(TempDisableParry());
         }
 
         if (Keyboard.current.sKey.wasPressedThisFrame)
@@ -56,6 +120,51 @@ public class PlayerMovement : MonoBehaviour
 
         // Animate the player's movement
         AnimateMovement();
+    }
+
+    private IEnumerator TempDisableParry() {
+        if (!canParry)
+        {
+            yield return null;
+        }
+        canParry = false;
+        Debug.Log("Disabled Parry:"+canParry);
+        yield return new WaitForSeconds(2f);
+        canParry = true;
+    }
+
+    private void StartIFrames() {
+
+        iFrameRoutine = StartCoroutine(IFrameVisual());
+    }
+
+    private void StopIFrames()
+    {
+        Color c = spriteRenderer.color;
+        c.a = 1f;
+        spriteRenderer.color = c;
+        StopCoroutine(iFrameRoutine);
+    }
+
+    IEnumerator IFrameVisual()
+    {
+        while (true)
+        {
+            var currentColor = spriteRenderer.color;
+            Debug.Log("Alpha Value:" + currentColor.a);
+            if(currentColor.a == 1f)
+            {
+                currentColor.a = 0.5f;
+                spriteRenderer.color = currentColor;
+            } else if(currentColor .a == 0.5f)
+            {
+                currentColor.a = 1f;
+                spriteRenderer.color = currentColor;
+            }
+
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void Jump()

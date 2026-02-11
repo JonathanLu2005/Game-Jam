@@ -1,4 +1,5 @@
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI; 
 using TMPro; 
 using System.Collections;
@@ -27,11 +28,16 @@ public class PlayerHealth : MonoBehaviour
     }
 
     public void ModifyHealth(int value) {
+       
         if (PlayerData.iframesTime > 0) return; // If player is currently invulnerable, do not modify health
         health += value;
         PlayerData.iframesTime = PlayerData.maxIframesTime;
+        Debug.Log("Damaged");
         if (health <= 0) {
             lives--;
+            if (lives <= 0) {
+                SceneManager.LoadScene("MainMenu");
+            }
             health = startingHealth;
             transform.position = new Vector2(0,0);
         } else if (health >= startingHealth) {

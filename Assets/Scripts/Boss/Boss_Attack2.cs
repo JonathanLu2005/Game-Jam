@@ -19,9 +19,16 @@ public class Boss_Attack2 : StateMachineBehaviour
         animator.GetComponent<Boss_Look_Player>().LookAt(player);
         if (Vector2.Distance(player.position, rb.position) <= attackRange && Boss_Data.timeToAttack <=  Boss_Data.timeSinceAttack)
         {
-            Boss_Data.timeSinceAttack = 2f; // Need to reset this cos parry
+            Boss_Data.timeSinceAttack = Random.Range(1.5F, 2.5F); // Need to reset this cos parry
             Boss_Data.timeSinceAttack = 0f;
-            animator.SetTrigger("Attack 2");
+            if (rb.position.y+1 < player.position.y)
+            {
+                animator.SetTrigger("Attack 1");
+            }
+            else
+            {
+                animator.SetTrigger("Attack 2");
+            }
         }
     }
 
@@ -29,6 +36,7 @@ public class Boss_Attack2 : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.ResetTrigger("Attack 2");
+        animator.ResetTrigger("Attack 1");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

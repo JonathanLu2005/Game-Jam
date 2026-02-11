@@ -20,6 +20,7 @@ public class Weapon_Collide : MonoBehaviour
         if (collision.CompareTag("Parry Box") && PlayerData.iframesTime <= 0)
         {
             PlayerData.iframesTime = PlayerData.maxIframesTime;
+            PlayerData.isParrying = true;   
         }
         else if (collision.CompareTag("Player"))
         {

@@ -1,19 +1,31 @@
 using UnityEngine;
 
-public class OrbitingTurret : MonoBehaviour
+public class TurretMovement : MonoBehaviour
 {
-    [Header("Orbit Settings")]
-    public Transform centerPoint;    // What we orbit around
-    public float orbitRadius = 3f;    // Distance from center
-    public float orbitSpeed = 90f;    // Degrees per second
+
+    public enum MovementMode
+    {
+        Orbit,
+        Spin,
+    }
+    [Header("Settings")]
+    private Transform centerPoint;    // What we orbit around
+    private float orbitRadius = 13f;    // Distance from center
+    private float orbitSpeed = 50f;    // Degrees per second
+
+    
 
     [Header("Rotation")]
     public bool faceCenter = true;
 
     private float angle;
 
+    public MovementMode currentMode;
+
     void Start()
     {
+        GameObject originObj = GameObject.FindGameObjectWithTag("Origin");
+        centerPoint = originObj.transform;
         if (centerPoint == null)
         {
             Debug.LogError("OrbitingTurret2D: No center point assigned!");
@@ -27,6 +39,28 @@ public class OrbitingTurret : MonoBehaviour
     }
 
     void Update()
+    {
+        switch (currentMode)
+        {
+            case MovementMode.Orbit: 
+                Orbit() ;
+                break;
+            default: 
+                Orbit();
+                break;
+        }
+    }
+
+    public void setOrbitRadius(float f)
+    {
+        orbitRadius = f;
+    }
+    public void setOrbitSpeed(float f)
+    {
+        orbitSpeed = f;
+    }
+
+    private void Orbit()
     {
         // Move along the orbit
         angle += orbitSpeed * Time.deltaTime;
