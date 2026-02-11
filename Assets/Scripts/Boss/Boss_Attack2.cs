@@ -19,7 +19,7 @@ public class Boss_Attack2 : StateMachineBehaviour
         animator.GetComponent<Boss_Look_Player>().LookAt(player);
         if (Vector2.Distance(player.position, rb.position) <= attackRange && Boss_Data.timeToAttack <=  Boss_Data.timeSinceAttack)
         {
-            Boss_Data.timeSinceAttack = Random.Range(1.5F, 2.5F); ; // Need to reset this cos parry
+            Boss_Data.timeSinceAttack = Random.Range(1.5F, 2.5F); // Need to reset this cos parry
             Boss_Data.timeSinceAttack = 0f;
             if (rb.position.y+1 < player.position.y)
             {
