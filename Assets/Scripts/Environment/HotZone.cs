@@ -15,6 +15,7 @@ public class HotZone : MonoBehaviour
                 Boss_Data.health--;
                 if (Boss_Data.health <= 0)
                 {
+                    Boss_Data.health = 100;
                     SceneManager.LoadScene("Win");
                 }
             }

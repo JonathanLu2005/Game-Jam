@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float startingSpeed = 5f;
     public float speed = 10f;
     private float jumpForce = 0f;
-    private float jumpHoldForce = 7f;
+    private float jumpHoldForce = 10f;
     private float maxJumpTime = 0.25f;
 
     private float jumpTimeCounter;
@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
             animator.SetTrigger("Jump");
+            Jump();
         }
 
         // Continue jump while held
@@ -128,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         }
         canParry = false;
         Debug.Log("Disabled Parry:"+canParry);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         canParry = true;
     }
 
