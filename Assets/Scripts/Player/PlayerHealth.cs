@@ -36,6 +36,7 @@ public class PlayerHealth : MonoBehaviour
         if (health <= 0) {
             lives--;
             if (lives <= 0) {
+                Boss_Data.health = 100;
                 SceneManager.LoadScene("MainMenu");
             }
             health = startingHealth;
